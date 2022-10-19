@@ -18,10 +18,10 @@ export class Parser {
   }
 
   /**
-   * Program
-   *   : StatementList
-   *   ;
-   */
+* Program
+*   : StatementList
+*   ;
+*/
   Program() {
     return {
       type: Tokens.program,
@@ -30,11 +30,11 @@ export class Parser {
   }
 
   /**
-   * StatementList
-   *   : Statement
-   *   | StatementList Statement
-   *   ;
-   */
+* StatementList
+*   : Statement
+*   | StatementList Statement
+*   ;
+*/
   StatementList(stopLookAhead: Tokens | null = null) {
     const statementList = [this.Statement()];
 
@@ -175,10 +175,10 @@ export class Parser {
   }
 
   /**
-   * ExpressionStatement
-   *   : Expression ';'
-   *   ;
-   */
+* ExpressionStatement
+*   : Expression ';'
+*   ;
+*/
   ExpressionStatement() {
     const expression = this.Expression();
     this.eat(Tokens.lineDelimiter);
@@ -189,10 +189,10 @@ export class Parser {
   }
 
   /**
-   * BlockStatement
-   *   : '{' OPT_StatementList '}'
-   *   ;
-   */
+* BlockStatement
+*   : '{' OPT_StatementList '}'
+*   ;
+*/
   BlockStatement() {
     this.eat(Tokens.lbra);
 
@@ -210,20 +210,20 @@ export class Parser {
   }
 
   /**
-   * Expression
-   *   : Literal
-   *   ;
-   */
+* Expression
+*   : Literal
+*   ;
+*/
   Expression() {
     return this.AssignmentExpression();
   }
 
   /**
-  * AssignmentExpression
-  *   : RelationalExpression
-  *   | LeftHandSideExpression ASSIGNMENT_OPERATOR AssignmentExpression
-  *   ;
-  */
+* AssignmentExpression
+*   : RelationalExpression
+*   | LeftHandSideExpression ASSIGNMENT_OPERATOR AssignmentExpression
+*   ;
+*/
   AssignmentExpression():any {
     const left = this.RelationalExpression()
 
@@ -274,8 +274,8 @@ export class Parser {
   }
 
   /**
-  * AssignmentOperator:
-  *   : ASSIGNMENT
+* AssignmentOperator:
+*   : ASSIGNMENT
 *   | COMPLEX_ASSIGNMENT
 *   ;
 */
@@ -301,21 +301,21 @@ export class Parser {
   }
 
   /**
-   * AdditiveExpression
-   *   : MultiplicativeExpression
-   *   | AdditiveExpression ADDITIVE_OPERATOR Literal
-   *   ;
-   */
+* AdditiveExpression
+*   : MultiplicativeExpression
+*   | AdditiveExpression ADDITIVE_OPERATOR Literal
+*   ;
+*/
   AdditiveExpression() {
     return this._BinaryExpression("MultiplicativeExpression", Tokens.additiveOperator)
   }
 
   /**
-   * MultiplicativeExpression
-   *   : PrimaryExpression
-   *   | MultiplicativeExpression MULTIPLICATIVE_OPERATOR PrimaryExpression
-   *   ;
-   */
+* MultiplicativeExpression
+*   : PrimaryExpression
+*   | MultiplicativeExpression MULTIPLICATIVE_OPERATOR PrimaryExpression
+*   ;
+*/
   MultiplicativeExpression() {
     return this._BinaryExpression("PrimaryExpression", Tokens.multiplicativeOperator)
   }
@@ -341,12 +341,12 @@ export class Parser {
   }
 
   /**
-   * PrimaryExpression
-   *   : Literal
-   *   | ParenthesizedExpression
-   *   | LeftHandSideExpression
-   *   ;
-   */
+* PrimaryExpression
+*   : Literal
+*   | ParenthesizedExpression
+*   | LeftHandSideExpression
+*   ;
+*/
   PrimaryExpression() {
     if(this._isLiteral(this.lookahead?.type))
       return this.Literal();
@@ -366,9 +366,9 @@ export class Parser {
   }
 
   /**
-   * ParenthesizedExpression
-   *   : '(' Expression ')'
-   */
+* ParenthesizedExpression
+*   : '(' Expression ')'
+*/
   ParenthesizedExpression() {
     this.eat(Tokens.lpar);
     const expression = this.Expression();
@@ -377,11 +377,11 @@ export class Parser {
   }
 
   /**
-   * Literal
-   *   : NumberLit
-   *   | StringLit
-   *   ;
-   */
+* Literal
+*   : NumberLit
+*   | StringLit
+*   ;
+*/
   Literal() {
     switch (this.lookahead?.type) {
       case Tokens.number:
@@ -393,20 +393,20 @@ export class Parser {
   }
 
   /**
-   * NumberLit
-   *   : NUMBER
-   *   ;
-   */
+* NumberLit
+*   : NUMBER
+*   ;
+*/
   NumberLit() {
     const tok: Tok | null = this.eat(Tokens.number);
     return { type: Tokens.number, value: Number(tok?.word) };
   }
 
   /**
-   * StringLit
-   *   : String
-   *   ;
-   */
+* StringLit
+*   : String
+*   ;
+*/
   StringLit() {
     const tok: Tok | null = this.eat(Tokens.string);
     return {

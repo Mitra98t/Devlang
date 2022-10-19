@@ -1,19 +1,32 @@
 import { Tok, Tokens, TokRecognition } from "./typesDef";
 
 const matches: TokRecognition[] = [
+  // Ignorables
   { id: Tokens.newLine, match: /^\n/ },
-  { id: Tokens.lineDelimiter, match: /^;/ },
   { id: Tokens.whiteSpace, match: /^[ \t]+/ },
+
+  // Line Delimiter
+  { id: Tokens.lineDelimiter, match: /^;/ },
+
+  // Cmments
   { id: Tokens.comment, match: /^\/\/.*/ }, // Single line comments
   { id: Tokens.comment, match: /^\/\*[\s\S]*?\*\// }, // Multi line comments
+
+  // Symbols
   { id: Tokens.lpar, match: /^\(/ },
   { id: Tokens.rpar, match: /^\)/ },
   { id: Tokens.lbra, match: /^\{/ },
   { id: Tokens.rbra, match: /^\}/ },
   { id: Tokens.comma, match: /^,/ },
+
+  // Arrow
   { id: Tokens.fatArrow, match: /^\=\>/ },
+  //
+  // Assignments
   { id: Tokens.complexAssign, match: /^[*\/+\-]=/ },
   { id: Tokens.assign, match: /^\=/ },
+
+  // Type Definition
   { id: Tokens.typeDef, match: /^\:[ \t]*[a-zA-Z][a-zA-Z_0-9]*/ },
 
   // Keywords
@@ -21,14 +34,22 @@ const matches: TokRecognition[] = [
   { id: Tokens.if, match: /^\bif\b/ },
   { id: Tokens.else, match: /^\belse\b/ },
 
+  // Operators
+  // Matematical Operator
   { id: Tokens.additiveOperator, match: /^[+\-]/ },
   { id: Tokens.multiplicativeOperator, match: /^[*\/]/ },
+  // Relational Operators
   { id: Tokens.relationalOperator, match: /^[><]=?/ },
 
+  // Literals
+  // String
   { id: Tokens.string, match: /^"(?:\\["\\]|[^\n"\\])*"/ }, // String using "
   { id: Tokens.string, match: /^'(?:\\['\\]|[^\n'\\])*'/ }, // String using '
-  { id: Tokens.identifier, match: /^[a-zA-Z][a-zA-Z_0-9]*/ },
+  // Number
   { id: Tokens.number, match: /^0|[1-9][0-9]*/ },
+  
+  // Identifier
+  { id: Tokens.identifier, match: /^[a-zA-Z][a-zA-Z_0-9]*/ },
 ];
 
 // const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
