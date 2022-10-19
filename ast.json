@@ -1,0 +1,35 @@
+{
+    "type": "PROGRAM",
+    "body": [
+        {
+            "type": "EXPRESSION_STATEMENT",
+            "expression": {
+                "type": "BINARY_EXPRESSION",
+                "operator": "*",
+                "left": {
+                    "type": "BINARY_EXPRESSION",
+                    "operator": "+",
+                    "left": {
+                        "type": "NUMBER",
+                        "value": 1
+                    },
+                    "right": {
+                        "type": "NUMBER",
+                        "value": 2
+                    }
+                },
+                "right": {
+                    "type": "NUMBER",
+                    "value": 3
+                }
+            }
+        },
+        {
+            "type": "EXPRESSION_STATEMENT",
+            "expression": {
+                "type": "STRING",
+                "value": "hello"
+            }
+        }
+    ]
+}
