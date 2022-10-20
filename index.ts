@@ -29,13 +29,3 @@ let ast = parser.parse();
 console.log(ast);
 
 fs.writeFileSync("ast.json", JSON.stringify(ast));
-
-// function test(program: string, expected: any) {
-//     let p = new Parser(program);
-//     const ast = p.parse();
-//     assert(deepEqual(ast, expected));
-// }
-
-// tests(test);
-
-// console.log("All Test Passed");

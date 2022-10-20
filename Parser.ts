@@ -9,7 +9,6 @@ export class Parser {
   constructor(string: string) {
     this.string = string;
     this.lex = new Lexer(this.string);
-    console.log(this.lex.tokens);
     this.lookahead = this.lex.nextToken();
   }
 
