@@ -1,0 +1,81 @@
+{
+  "type": "PROGRAM",
+  "body": [
+    {
+      "type": "VARIABLE_DECLARATION",
+      "declarations": [
+        {
+          "type": "VARIABLE_DECLARATION",
+          "id": {
+            "type": "IDENTIFIER",
+            "name": "foo"
+          },
+          "init": {
+            "type": "NUMBER",
+            "value": 2
+          }
+        }
+      ]
+    },
+    {
+      "type": "VARIABLE_DECLARATION",
+      "declarations": [
+        {
+          "type": "VARIABLE_DECLARATION",
+          "id": {
+            "type": "IDENTIFIER",
+            "name": "y"
+          },
+          "init": {
+            "type": "STRING",
+            "value": "Hello World"
+          }
+        }
+      ]
+    },
+    {
+      "type": "EXPRESSION_STATEMENT",
+      "expression": {
+        "type": "CALL_EXPRESSION",
+        "callee": {
+          "type": "MEMBER_EXPRESSION",
+          "computed": false,
+          "object": {
+            "type": "IDENTIFIER",
+            "name": "fica"
+          },
+          "property": {
+            "type": "IDENTIFIER",
+            "name": "stampa"
+          }
+        },
+        "arguments": [
+          {
+            "type": "BINARY_EXPRESSION",
+            "operator": "+",
+            "left": {
+              "type": "IDENTIFIER",
+              "name": "y"
+            },
+            "right": {
+              "type": "CALL_EXPRESSION",
+              "callee": {
+                "type": "MEMBER_EXPRESSION",
+                "computed": false,
+                "object": {
+                  "type": "IDENTIFIER",
+                  "name": "foo"
+                },
+                "property": {
+                  "type": "IDENTIFIER",
+                  "name": "toStrig"
+                }
+              },
+              "arguments": []
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

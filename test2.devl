@@ -1,0 +1,5 @@
+let foo = 2;
+
+let y = "Hello World";
+
+fica.stampa(y + foo.toStrig()); 
