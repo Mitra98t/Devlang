@@ -2,99 +2,315 @@
   "type": "PROGRAM",
   "body": [
     {
-      "type": "IF_STATEMENT",
-      "condition": {
-        "type": "BINARY_EXPRESSION",
-        "operator": ">",
-        "left": {
-          "type": "IDENTIFIER",
-          "name": "x"
-        },
-        "right": {
-          "type": "NUMBER",
-          "value": 10
-        }
+      "type": "CLASS_DECLARATION",
+      "id": {
+        "type": "IDENTIFIER",
+        "name": "Point"
       },
-      "then": {
-        "type": "IF_STATEMENT",
-        "condition": {
-          "type": "BINARY_EXPRESSION",
-          "operator": ">=",
-          "left": {
-            "type": "IDENTIFIER",
-            "name": "x"
-          },
-          "right": {
-            "type": "NUMBER",
-            "value": 11
-          }
-        },
-        "then": {
-          "type": "IF_STATEMENT",
-          "condition": {
-            "type": "BINARY_EXPRESSION",
-            "operator": "<",
-            "left": {
+      "superClass": null,
+      "body": {
+        "type": "BLOCK_STATEMENT",
+        "body": [
+          {
+            "type": "FUNCTION_DECLARATION",
+            "name": {
               "type": "IDENTIFIER",
-              "name": "x"
+              "name": "contructor"
             },
-            "right": {
-              "type": "NUMBER",
-              "value": 12
-            }
-          },
-          "then": {
-            "type": "IF_STATEMENT",
-            "condition": {
-              "type": "BINARY_EXPRESSION",
-              "operator": "<=",
-              "left": {
+            "params": [
+              {
                 "type": "IDENTIFIER",
                 "name": "x"
               },
-              "right": {
-                "type": "NUMBER",
-                "value": 13
+              {
+                "type": "IDENTIFIER",
+                "name": "y"
               }
-            },
-            "then": {
-              "type": "EXPRESSION_STATEMENT",
-              "expression": {
-                "type": "ASSIGNMENT_EXPRESSION",
-                "operator": "=",
-                "left": {
-                  "type": "IDENTIFIER",
-                  "name": "x"
+            ],
+            "body": {
+              "type": "BLOCK_STATEMENT",
+              "body": [
+                {
+                  "type": "EXPRESSION_STATEMENT",
+                  "expression": {
+                    "type": "ASSIGNMENT_EXPRESSION",
+                    "operator": "=",
+                    "left": {
+                      "type": "MEMBER_EXPRESSION",
+                      "computed": false,
+                      "object": {
+                        "type": "THIS_EXPRESSION"
+                      },
+                      "property": {
+                        "type": "IDENTIFIER",
+                        "name": "x"
+                      }
+                    },
+                    "right": {
+                      "type": "IDENTIFIER",
+                      "name": "x"
+                    }
+                  }
                 },
-                "right": {
-                  "type": "BINARY_EXPRESSION",
-                  "operator": ">",
-                  "left": {
+                {
+                  "type": "EXPRESSION_STATEMENT",
+                  "expression": {
+                    "type": "ASSIGNMENT_EXPRESSION",
+                    "operator": "=",
+                    "left": {
+                      "type": "MEMBER_EXPRESSION",
+                      "computed": false,
+                      "object": {
+                        "type": "THIS_EXPRESSION"
+                      },
+                      "property": {
+                        "type": "IDENTIFIER",
+                        "name": "y"
+                      }
+                    },
+                    "right": {
+                      "type": "IDENTIFIER",
+                      "name": "y"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "FUNCTION_DECLARATION",
+            "name": {
+              "type": "IDENTIFIER",
+              "name": "calc"
+            },
+            "params": [],
+            "body": {
+              "type": "BLOCK_STATEMENT",
+              "body": [
+                {
+                  "type": "RETURN_STATEMENT",
+                  "argument": {
                     "type": "BINARY_EXPRESSION",
                     "operator": "+",
                     "left": {
-                      "type": "NUMBER",
-                      "value": 3
+                      "type": "MEMBER_EXPRESSION",
+                      "computed": false,
+                      "object": {
+                        "type": "THIS_EXPRESSION"
+                      },
+                      "property": {
+                        "type": "IDENTIFIER",
+                        "name": "x"
+                      }
                     },
                     "right": {
-                      "type": "NUMBER",
-                      "value": 4
+                      "type": "MEMBER_EXPRESSION",
+                      "computed": false,
+                      "object": {
+                        "type": "THIS_EXPRESSION"
+                      },
+                      "property": {
+                        "type": "IDENTIFIER",
+                        "name": "y"
+                      }
                     }
-                  },
-                  "right": {
-                    "type": "NUMBER",
-                    "value": 2
                   }
                 }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "CLASS_DECLARATION",
+      "id": {
+        "type": "IDENTIFIER",
+        "name": "Point3D"
+      },
+      "superClass": {
+        "type": "IDENTIFIER",
+        "name": "Point"
+      },
+      "body": {
+        "type": "BLOCK_STATEMENT",
+        "body": [
+          {
+            "type": "FUNCTION_DECLARATION",
+            "name": {
+              "type": "IDENTIFIER",
+              "name": "constructor"
+            },
+            "params": [
+              {
+                "type": "IDENTIFIER",
+                "name": "x"
+              },
+              {
+                "type": "IDENTIFIER",
+                "name": "y"
+              },
+              {
+                "type": "IDENTIFIER",
+                "name": "z"
+              }
+            ],
+            "body": {
+              "type": "BLOCK_STATEMENT",
+              "body": [
+                {
+                  "type": "EXPRESSION_STATEMENT",
+                  "expression": {
+                    "type": "CALL_EXPRESSION",
+                    "callee": {
+                      "type": "super"
+                    },
+                    "arguments": [
+                      {
+                        "type": "IDENTIFIER",
+                        "name": "x"
+                      },
+                      {
+                        "type": "IDENTIFIER",
+                        "name": "y"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "EXPRESSION_STATEMENT",
+                  "expression": {
+                    "type": "ASSIGNMENT_EXPRESSION",
+                    "operator": "=",
+                    "left": {
+                      "type": "MEMBER_EXPRESSION",
+                      "computed": false,
+                      "object": {
+                        "type": "THIS_EXPRESSION"
+                      },
+                      "property": {
+                        "type": "IDENTIFIER",
+                        "name": "z"
+                      }
+                    },
+                    "right": {
+                      "type": "IDENTIFIER",
+                      "name": "z"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "FUNCTION_DECLARATION",
+            "name": {
+              "type": "IDENTIFIER",
+              "name": "calc"
+            },
+            "params": [],
+            "body": {
+              "type": "BLOCK_STATEMENT",
+              "body": [
+                {
+                  "type": "RETURN_STATEMENT",
+                  "argument": {
+                    "type": "BINARY_EXPRESSION",
+                    "operator": "+",
+                    "left": {
+                      "type": "CALL_EXPRESSION",
+                      "callee": {
+                        "type": "super"
+                      },
+                      "arguments": []
+                    },
+                    "right": {
+                      "type": "MEMBER_EXPRESSION",
+                      "computed": false,
+                      "object": {
+                        "type": "THIS_EXPRESSION"
+                      },
+                      "property": {
+                        "type": "IDENTIFIER",
+                        "name": "z"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "VARIABLE_DECLARATION",
+      "declarations": [
+        {
+          "type": "VARIABLE_DECLARATION",
+          "id": {
+            "type": "IDENTIFIER",
+            "name": "p"
+          },
+          "init": {
+            "type": "NEW_EXPRESSION",
+            "calle": {
+              "type": "IDENTIFIER",
+              "name": "Point3D"
+            },
+            "arguments": [
+              {
+                "type": "NUMBER",
+                "value": 10
+              },
+              {
+                "type": "NUMBER",
+                "value": 20
+              },
+              {
+                "type": "NUMBER",
+                "value": 30
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "EXPRESSION_STATEMENT",
+      "expression": {
+        "type": "CALL_EXPRESSION",
+        "callee": {
+          "type": "MEMBER_EXPRESSION",
+          "computed": false,
+          "object": {
+            "type": "IDENTIFIER",
+            "name": "console"
+          },
+          "property": {
+            "type": "IDENTIFIER",
+            "name": "log"
+          }
+        },
+        "arguments": [
+          {
+            "type": "CALL_EXPRESSION",
+            "callee": {
+              "type": "MEMBER_EXPRESSION",
+              "computed": false,
+              "object": {
+                "type": "IDENTIFIER",
+                "name": "p"
+              },
+              "property": {
+                "type": "IDENTIFIER",
+                "name": "calc"
               }
             },
-            "alternate": null
-          },
-          "alternate": null
-        },
-        "alternate": null
-      },
-      "alternate": null
+            "arguments": []
+          }
+        ]
+      }
     }
   ]
 }

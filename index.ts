@@ -1,6 +1,4 @@
-import { assert } from "console";
 import { Parser } from "./Parser";
-import { tests } from "./literals-test";
 import fs from "fs";
 
 var deepEqual = function (x: any, y: any) {

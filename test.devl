@@ -1,3 +1,26 @@
-if(x > 10) if(x >= 11) if(x < 12 ) if(x <= 13) x = 3 + 4 > 2;
+class Point{
+  fun contructor(x,y){
+    this.x = x;
+    this.y = y;
+  }
+
+  fun calc(){
+    return this.x + this.y;
+  }
+}
+
+class Point3D extends Point{
+  fun constructor(x,y,z){
+    super(x,y);
+    this.z = z;
+  }
+
+  fun calc(){
+    return super() + this.z;
+  }
+}
 
 
+let p = new Point3D(10,20,30);
+
+console.log(p.calc());
