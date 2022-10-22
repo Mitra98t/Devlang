@@ -1,8 +1,9 @@
 {
+  "name": "devlang-cli",
+  "description": "A simple parser for a simple language",
+  "version": "1.0.0",
   "main": "./out/devlang-cli.js",
-  "bin": {
-    "devl": "./out/devlang-cli.js"
-  },
+  "bin": "./out/devlang-cli.js",
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' devlang-cli.ts",
     "start:windows": "nodemon --watch 'src/**/*.ts' --exec \"npx ts-node\" devlang-cli.ts",
