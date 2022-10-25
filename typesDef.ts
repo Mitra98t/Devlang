@@ -44,6 +44,8 @@ export enum Tokens {
   super="super",
   new="new",
   this="this",
+  import="import",
+  run="run",
 
   program = "PROGRAM",
   // Statemens
@@ -55,6 +57,8 @@ export enum Tokens {
   doWhileStatement = "DO_WHILE_STATEMENT",
   forStatement = "FOR_STATEMENT",
   returnStatement = "RETURN_STATEMENT",
+  importStatement = "IMPORT_STATEMENT",
+  runStatement = "RUN_STATEMENT",
 
   // Expressions
   binaryExpression = "BINARY_EXPRESSION",
@@ -67,13 +71,15 @@ export enum Tokens {
   callExpression = "CALL_EXPRESSION",
   thisExpression = "THIS_EXPRESSION",
   newExpression = "NEW_EXPRESSION",
-
+  
+  //declarations
   variableDeclaration = "VARIABLE_DECLARATION",
   functionDeclaration = "FUNCTION_DECLARATION",
   classDeclaration = "CLASS_DECLARATION",
 
   // Operators
   additiveOperator = "ADDITIVE_OPERATOR",
+  moduleOperator = "MODULE_OPERATOR",
   multiplicativeOperator = "MULTIPLICATIVE_OPERATOR",
   relationalOperator = "RELATIONAL_OPERATOR",
   equalityOperator = "EQUALITY_OPERATOR",

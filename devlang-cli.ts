@@ -8,6 +8,7 @@ import clear from "clear"
 import figlet from "figlet"
 import { Command, Option } from "commander"
 import { exit } from "process";
+import { main } from "./intepreter/interpreter";
 
 clear();
 console.log(
@@ -65,4 +66,8 @@ if (opts.hasOwnProperty("out")) {
   fs.writeFileSync(opts.out, JSON.stringify(ast, null, 2))
   console.log(`Saved the AST into ${chalk.green(opts.out)}`)
 }
+
+console.log(chalk.green("\n---Execution---\n"))
+
+main(ast)
 

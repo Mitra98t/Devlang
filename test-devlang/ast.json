@@ -2,84 +2,38 @@
   "type": "PROGRAM",
   "body": [
     {
-      "type": "VARIABLE_DECLARATION",
-      "declarations": [
+      "type": "FUNCTION_DECLARATION",
+      "name": {
+        "type": "IDENTIFIER",
+        "name": "ciao"
+      },
+      "params": [
         {
-          "type": "VARIABLE_DECLARATION",
-          "id": {
-            "type": "IDENTIFIER",
-            "name": "foo"
-          },
-          "init": {
-            "type": "BINARY_EXPRESSION",
-            "operator": "*",
-            "left": {
+          "type": "IDENTIFIER",
+          "name": "x"
+        },
+        {
+          "type": "IDENTIFIER",
+          "name": "y"
+        }
+      ],
+      "body": {
+        "type": "BLOCK_STATEMENT",
+        "body": [
+          {
+            "type": "RETURN_STATEMENT",
+            "argument": {
               "type": "BINARY_EXPRESSION",
               "operator": "+",
               "left": {
-                "type": "NUMBER",
-                "value": 4
+                "type": "IDENTIFIER",
+                "name": "x"
               },
               "right": {
-                "type": "NUMBER",
-                "value": 3
+                "type": "IDENTIFIER",
+                "name": "y"
               }
-            },
-            "right": {
-              "type": "NUMBER",
-              "value": 2
             }
-          }
-        }
-      ]
-    },
-    {
-      "type": "EMPTY_STATEMENT"
-    },
-    {
-      "type": "VARIABLE_DECLARATION",
-      "declarations": [
-        {
-          "type": "VARIABLE_DECLARATION",
-          "id": {
-            "type": "IDENTIFIER",
-            "name": "bar"
-          },
-          "init": {
-            "type": "BINARY_EXPRESSION",
-            "operator": "-",
-            "left": {
-              "type": "BINARY_EXPRESSION",
-              "operator": "*",
-              "left": {
-                "type": "NUMBER",
-                "value": 4
-              },
-              "right": {
-                "type": "NUMBER",
-                "value": 2
-              }
-            },
-            "right": {
-              "type": "NUMBER",
-              "value": 43
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "EXPRESSION_STATEMENT",
-      "expression": {
-        "type": "CALL_EXPRESSION",
-        "callee": {
-          "type": "IDENTIFIER",
-          "name": "print"
-        },
-        "arguments": [
-          {
-            "type": "IDENTIFIER",
-            "name": "foo"
           }
         ]
       }
@@ -90,122 +44,16 @@
         "type": "CALL_EXPRESSION",
         "callee": {
           "type": "IDENTIFIER",
-          "name": "print"
+          "name": "ciao"
         },
         "arguments": [
           {
-            "type": "IDENTIFIER",
-            "name": "bar"
-          }
-        ]
-      }
-    },
-    {
-      "type": "EXPRESSION_STATEMENT",
-      "expression": {
-        "type": "ASSIGNMENT_EXPRESSION",
-        "operator": "=",
-        "left": {
-          "type": "IDENTIFIER",
-          "name": "foo"
-        },
-        "right": {
-          "type": "BINARY_EXPRESSION",
-          "operator": "!=",
-          "left": {
-            "type": "BINARY_EXPRESSION",
-            "operator": ">",
-            "left": {
-              "type": "NUMBER",
-              "value": 2
-            },
-            "right": {
-              "type": "NUMBER",
-              "value": 0
-            }
+            "type": "NUMBER",
+            "value": 3
           },
-          "right": {
-            "type": "BINARY_EXPRESSION",
-            "operator": "<",
-            "left": {
-              "type": "NUMBER",
-              "value": 3
-            },
-            "right": {
-              "type": "NUMBER",
-              "value": 0
-            }
-          }
-        }
-      }
-    },
-    {
-      "type": "EXPRESSION_STATEMENT",
-      "expression": {
-        "type": "CALL_EXPRESSION",
-        "callee": {
-          "type": "IDENTIFIER",
-          "name": "print"
-        },
-        "arguments": [
           {
-            "type": "IDENTIFIER",
-            "name": "foo"
-          }
-        ]
-      }
-    },
-    {
-      "type": "EXPRESSION_STATEMENT",
-      "expression": {
-        "type": "ASSIGNMENT_EXPRESSION",
-        "operator": "=",
-        "left": {
-          "type": "IDENTIFIER",
-          "name": "foo"
-        },
-        "right": {
-          "type": "BINARY_EXPRESSION",
-          "operator": "==",
-          "left": {
-            "type": "BINARY_EXPRESSION",
-            "operator": ">",
-            "left": {
-              "type": "NUMBER",
-              "value": 2
-            },
-            "right": {
-              "type": "NUMBER",
-              "value": 0
-            }
-          },
-          "right": {
-            "type": "BINARY_EXPRESSION",
-            "operator": "<",
-            "left": {
-              "type": "NUMBER",
-              "value": 3
-            },
-            "right": {
-              "type": "NUMBER",
-              "value": 0
-            }
-          }
-        }
-      }
-    },
-    {
-      "type": "EXPRESSION_STATEMENT",
-      "expression": {
-        "type": "CALL_EXPRESSION",
-        "callee": {
-          "type": "IDENTIFIER",
-          "name": "print"
-        },
-        "arguments": [
-          {
-            "type": "IDENTIFIER",
-            "name": "foo"
+            "type": "NUMBER",
+            "value": 4
           }
         ]
       }

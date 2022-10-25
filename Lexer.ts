@@ -53,6 +53,8 @@ const matches: TokRecognition[] = [
   { id: Tokens.super, match: /^\bsuper\b/ },
   { id: Tokens.new, match: /^\bnew\b/ },
   { id: Tokens.this, match: /^\bthis\b/ },
+  { id: Tokens.import, match: /^\bimport\b/ },
+  { id: Tokens.run, match: /^\brun\b/ },
 
   // Identifier
   { id: Tokens.identifier, match: /^[a-zA-Z][a-zA-Z_0-9]*/ },
@@ -61,6 +63,7 @@ const matches: TokRecognition[] = [
   // Matematical Operator
   { id: Tokens.additiveOperator, match: /^[+\-]/ },
   { id: Tokens.multiplicativeOperator, match: /^[*\/]/ },
+  { id: Tokens.moduleOperator, match: /^\%/ },
   // Relational Operators
   { id: Tokens.relationalOperator, match: /^[><]=?/ },
   // Logical Operators

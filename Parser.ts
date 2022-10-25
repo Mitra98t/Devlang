@@ -60,6 +60,7 @@ export class Parser {
 *   | FunctionDeclaration
 *   | ReturnStatement
 *   | ClassDeclaration
+*   | ImportStatement
 *   ;
 */
   Statement() {
@@ -72,6 +73,10 @@ export class Parser {
         return this.BlockStatement();
       case Tokens.let:
         return this.VariableStatement()
+      case Tokens.import:
+        return this.ImportStatement()
+      case Tokens.run:
+        return this.RunStatement()
       case Tokens.fun:
         return this.FunctionDeclaration()
       case Tokens.class:
@@ -84,6 +89,43 @@ export class Parser {
         return this.IterationStatement()
       default:
         return this.ExpressionStatement();
+    }
+  }
+
+  /**
+* RunStatement
+*   : 'run' '(' Expression ')' ';'
+*   ;
+*/
+  RunStatement(){
+    this.eat(Tokens.run)
+
+    this.eat(Tokens.lpar)
+    let command = this.Expression()
+    this.eat(Tokens.rpar)
+    this.eat(Tokens.lineDelimiter)
+
+    return{
+      type: Tokens.runStatement,
+      command,
+    }
+  }
+
+  /**
+* ImportStatement
+*   : 'import' '(' StringLit ')' ';'
+*   ;
+*/
+  ImportStatement(){
+    this.eat(Tokens.import)
+
+    this.eat(Tokens.lpar)
+    let library = this.StringLit()
+    this.eat(Tokens.rpar)
+    this.eat(Tokens.lineDelimiter)
+    return {
+      type: Tokens.importStatement,
+      library
     }
   }
 
@@ -656,8 +698,15 @@ export class Parser {
 */
   RelationalExpression() {
     return this._BinaryExpression(
-      "AdditiveExpression",
+      "ModuleExpression",
       Tokens.relationalOperator
+    )
+  }
+
+  ModuleExpression(){
+    return this._BinaryExpression(
+      "AdditiveExpression",
+      Tokens.moduleOperator
     )
   }
 
@@ -702,7 +751,7 @@ export class Parser {
   /**
   * Generic binary expression
   */
-  _BinaryExpression(builderName: "PrimaryExpression" | "MultiplicativeExpression" | "AdditiveExpression" | "RelationalExpression" | "UnaryExpression", operatorToken: any) {
+  _BinaryExpression(builderName: "PrimaryExpression" | "MultiplicativeExpression" | "AdditiveExpression" | "RelationalExpression" | "ModuleExpression" | "UnaryExpression", operatorToken: any) {
     let left: any = this[builderName]();
     while (this.lookahead?.type === operatorToken) {
       const operator = this.eat(operatorToken).word;
