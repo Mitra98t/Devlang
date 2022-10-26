@@ -20,7 +20,7 @@ console.log(
 const program = new Command()
 
 program
-  .version('1.1.2')
+  .version('1.1.3')
   .description("Proto-Language to try and create a parser and and interpreter in TypeScript")
   .usage("[OPTIONS]")
   .addOption(new Option('-e, --expression <exp>', 'Expression to Parse and Execute').conflicts(['file']))

@@ -1,26 +1,63 @@
 # DevLang
 
-## Code example
 
-### Pari o Dispari
 
-```dl
-foo:number = 4
+## Syntax
 
-if(foo % 2 == 0)
-    print("foo: " + foo + " è pari")
+### Variable Declaration
+
+```
+let id = exp;
+```
+
+### if-then-else
+
+```
+if(condition){
+  // code if condition is true
+}
 else{
-    print("foo: " + foo + " è dispari")
+  // code if condition is false
 }
 ```
 
-### Factorial
+### while, do-while, for
 
-```dl
-foo:number = 5
-
-fun factorial(n:number):number{
-    if(n == 0) return 1
-    return factorial(n-1) * n
+```
+while(condition){
+  // code while condition is true
 }
+
+do{
+  // code while condition is true
+  // code will be executed at lest one time
+}while(condition);
+
+for(init; condition; update){
+  // code while condition is true
+}
+```
+
+### Function Declaration and Function Call
+
+```
+// declaration
+fun id(params...){
+  // code...
+}
+
+// call
+id(actual params...);
+```
+
+### System Calls
+
+```
+run("command");
+```
+
+### Specials
+
+```
+print(exp);
 ```
