@@ -3,6 +3,7 @@ import { Tokens } from "../typesDef";
 import { VirtualMachine } from "./vm";
 
 const vm = new VirtualMachine();
+let scope = "global_"
 export function main(astIn: any) {
 
   // let ast = JSON.parse(fs.readFileSync("../test-devlang/ast.json", "utf-8"));
@@ -37,8 +38,15 @@ function bodyEvaluation(body: any) {
       case Tokens.functionDeclaration:
         functionDeclaration(stat);
         break;
+      case Tokens.returnStatement:
+        returnStatement(stat)
+        break;
       case Tokens.expressionStatement:
         expressionStatement(stat);
+        break;
+      case Tokens.assignmentExpression:
+        assignmentExpression(stat)
+        break;
       default:
         break;
     }
@@ -46,9 +54,8 @@ function bodyEvaluation(body: any) {
 
 }
 
-function functionDeclaration(subAst:any){
+function functionDeclaration(subAst: any) {
   vm.declareFun(subAst.name.name, subAst.params, subAst.body)
-  vm.printFuns()
 }
 
 
@@ -74,9 +81,9 @@ function forStatement(subAst: any) {
 
   let condition = expressionEvaluator(subAst.condition)
   while (condition) {
-    let body = subAst.body.type == Tokens.blockStatement ? subAst.body.body : [subAst.body] 
+    let body = subAst.body.type == Tokens.blockStatement ? subAst.body.body : [subAst.body]
     bodyEvaluation(body)
-    expressionStatement({expression:subAst.update})
+    bodyEvaluation([subAst.update])
     condition = expressionEvaluator(subAst.condition)
   }
 }
@@ -207,7 +214,7 @@ function binaryExpressionEvaluator(binExpAst: any): any {
 function variableDeclaration(subAst: any,) {
   let valueToUse: any = null;
   subAst.declarations.forEach((varDec: any) => {
-    valueToUse = expressionEvaluator(varDec.init);
+    valueToUse = varDec.init.type == Tokens.callExpression ? callExpression(varDec.init) : expressionEvaluator(varDec.init);
     vm.declareVar(varDec.id.name, valueToUse);
   });
 }
@@ -252,5 +259,23 @@ function callExpression(subAst: any,) {
       toPrint += expressionEvaluator(arg)
     });
     console.log(toPrint)
+    return
   }
+
+  let func = vm.getFun(subAst.callee.name)
+
+  if (func.arguments.length != subAst.arguments.length)
+    throw new Error(`Wrong arguments to pass to function ${subAst.callee.name}`);
+
+  for (let idx = 0; idx < func.arguments.length; idx++) {
+    const p = func.arguments[idx];
+    vm.declareVar(p, subAst.arguments[idx].value)
+  }
+
+  return bodyEvaluation(func.body.body)
+}
+
+function returnStatement(subAst:any){
+  
+  return (expressionEvaluator(subAst.argument))
 }

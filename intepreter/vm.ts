@@ -8,12 +8,26 @@ export class VirtualMachine {
   }
 
   declareFun(id:string, params:any, body:any){
+    if (this.funMem.hasOwnProperty(id)) {
+      throw new Error(
+        `Boa deh la funzione ${id} esiste già. Ma svegliati... Coglione.`
+      );
+    }
     this.funMem[id] = {}
-    this.funMem[id].ambient = {}
-      params.forEach((p:any) => {
-      this.funMem[id].ambient[p.name] = {value:null}
+    this.funMem[id].arguments= []
+    params.forEach((p:any) => {
+      this.funMem[id].arguments.push(p.name)
     });
     this.funMem[id].body = body
+  }
+
+  getFun(id:string){
+    if (!this.funMem.hasOwnProperty(id)) {
+      throw new Error(
+        `Ga0 deh la funzione ${id} un c'è. Ma svegliati... Coglione.`
+      );
+    }
+    return this.funMem[id]
   }
 
   //TODO: remove this function
@@ -51,6 +65,11 @@ export class VirtualMachine {
   * @param id name of var
   */
   getVar(id: string) {
+    if (!this.varMem.hasOwnProperty(id)) {
+      throw new Error(
+        `Ga0 deh ${id} un c'è. Ma svegliati... Coglione.`
+      );
+    }
     return this.varMem[id];
   }
 }

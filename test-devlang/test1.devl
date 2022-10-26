@@ -1,5 +1,7 @@
-fun ciao (x, y){
-  return x+y;
+let foo = 0;
+for(foo;foo < 10; foo = foo+1){
+  if(foo % 2 == 0)
+    print(foo, " pari");
+  else
+    print(foo, " dispari");
 }
-
-ciao(3,4);
