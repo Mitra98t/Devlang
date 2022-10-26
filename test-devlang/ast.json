@@ -2,124 +2,21 @@
   "type": "PROGRAM",
   "body": [
     {
-      "type": "VARIABLE_DECLARATION",
-      "declarations": [
-        {
-          "type": "VARIABLE_DECLARATION",
-          "id": {
-            "type": "IDENTIFIER",
-            "name": "foo"
-          },
-          "init": {
-            "type": "NUMBER",
-            "value": 0
-          }
-        }
-      ]
-    },
-    {
-      "type": "FOR_STATEMENT",
-      "init": {
-        "type": "IDENTIFIER",
-        "name": "foo"
-      },
-      "condition": {
-        "type": "BINARY_EXPRESSION",
-        "operator": "<",
-        "left": {
+      "type": "EXPRESSION_STATEMENT",
+      "expression": {
+        "type": "CALL_EXPRESSION",
+        "callee": {
           "type": "IDENTIFIER",
-          "name": "foo"
+          "name": "print"
         },
-        "right": {
-          "type": "NUMBER",
-          "value": 10
-        }
-      },
-      "update": {
-        "type": "ASSIGNMENT_EXPRESSION",
-        "operator": "=",
-        "left": {
-          "type": "IDENTIFIER",
-          "name": "foo"
-        },
-        "right": {
-          "type": "BINARY_EXPRESSION",
-          "operator": "+",
-          "left": {
-            "type": "IDENTIFIER",
-            "name": "foo"
-          },
-          "right": {
-            "type": "NUMBER",
-            "value": 1
-          }
-        }
-      },
-      "body": {
-        "type": "BLOCK_STATEMENT",
-        "body": [
+        "arguments": [
           {
-            "type": "IF_STATEMENT",
-            "condition": {
-              "type": "BINARY_EXPRESSION",
-              "operator": "==",
-              "left": {
-                "type": "BINARY_EXPRESSION",
-                "operator": "%",
-                "left": {
-                  "type": "IDENTIFIER",
-                  "name": "foo"
-                },
-                "right": {
-                  "type": "NUMBER",
-                  "value": 2
-                }
-              },
-              "right": {
-                "type": "NUMBER",
-                "value": 0
-              }
-            },
-            "then": {
-              "type": "EXPRESSION_STATEMENT",
-              "expression": {
-                "type": "CALL_EXPRESSION",
-                "callee": {
-                  "type": "IDENTIFIER",
-                  "name": "print"
-                },
-                "arguments": [
-                  {
-                    "type": "IDENTIFIER",
-                    "name": "foo"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": " pari"
-                  }
-                ]
-              }
-            },
-            "alternate": {
-              "type": "EXPRESSION_STATEMENT",
-              "expression": {
-                "type": "CALL_EXPRESSION",
-                "callee": {
-                  "type": "IDENTIFIER",
-                  "name": "print"
-                },
-                "arguments": [
-                  {
-                    "type": "IDENTIFIER",
-                    "name": "foo"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": " dispari"
-                  }
-                ]
-              }
-            }
+            "type": "STRING",
+            "value": "Stampa 4 -> "
+          },
+          {
+            "type": "NUMBER",
+            "value": 4
           }
         ]
       }
