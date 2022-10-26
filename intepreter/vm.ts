@@ -10,7 +10,7 @@ export class VirtualMachine {
   declareFun(id:string, params:any, body:any){
     if (this.funMem.hasOwnProperty(id)) {
       throw new Error(
-        `Boa deh la funzione ${id} esiste già. Ma svegliati... Coglione.`
+        `Function ${id} already declared`
       );
     }
     this.funMem[id] = {}
@@ -24,7 +24,7 @@ export class VirtualMachine {
   getFun(id:string){
     if (!this.funMem.hasOwnProperty(id)) {
       throw new Error(
-        `Ga0 deh la funzione ${id} un c'è. Ma svegliati... Coglione.`
+        `Missing function ${id}`
       );
     }
     return this.funMem[id]
@@ -43,7 +43,7 @@ export class VirtualMachine {
   declareVar(id: string, value: any) {
     if (this.varMem.hasOwnProperty(id)) {
       throw new Error(
-        `Boa deh ${id} c'è già. Ma svegliati... Coglione.`
+        `Variable ${id} already declared`
       );
     }
     this.varMem[id] = value;
@@ -55,7 +55,7 @@ export class VirtualMachine {
   assignToVar(id: string, value: any) {
     if (!this.varMem.hasOwnProperty(id)) {
       throw new Error(
-        `Ga0 deh ${id} un c'è. Ma svegliati... Coglione.`
+        `Missing variable ${id}`
       );
     }
     this.varMem[id] = value;
@@ -67,7 +67,7 @@ export class VirtualMachine {
   getVar(id: string) {
     if (!this.varMem.hasOwnProperty(id)) {
       throw new Error(
-        `Ga0 deh ${id} un c'è. Ma svegliati... Coglione.`
+        `Missing variable ${id}`
       );
     }
     return this.varMem[id];
