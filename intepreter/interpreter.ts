@@ -1,9 +1,10 @@
 import { exec } from "child_process";
+import { defaults } from "figlet";
 import { Tokens } from "../typesDef";
 import { VirtualMachine } from "./vm";
 
 const vm = new VirtualMachine();
-let scope = "global_"
+let scope = "global"
 export function main(astIn: any) {
 
   // let ast = JSON.parse(fs.readFileSync("../test-devlang/ast.json", "utf-8"));
@@ -55,7 +56,7 @@ function bodyEvaluation(body: any) {
 }
 
 function functionDeclaration(subAst: any) {
-  vm.declareFun(subAst.name.name, subAst.params, subAst.body)
+  vm.declareFun(scope,subAst.name.name, subAst.params, subAst.body)
 }
 
 
@@ -77,6 +78,7 @@ function runStatement(subAst: any) {
 }
 
 function forStatement(subAst: any) {
+  addScope(_genScopeName(subAst.type, subAst.position))
   bodyEvaluation([subAst.init])
 
   let condition = expressionEvaluator(subAst.condition)
@@ -105,6 +107,7 @@ function whileStatement(subAst: any) {
 }
 
 function ifStatement(subAst: any) {
+  addScope(_genScopeName(subAst.type, subAst.position))
   let condition = expressionEvaluator(subAst.condition)
   let branch = null
   if (condition)
@@ -113,6 +116,7 @@ function ifStatement(subAst: any) {
     branch = subAst.alternate.type == Tokens.blockStatement ? subAst.alternate.body : [subAst.alternate]
 
   bodyEvaluation(branch)
+  removeScope()
 }
 
 function importStatement(subAst: any) {
@@ -130,7 +134,7 @@ function expressionEvaluator(expAst: any) {
     case Tokens.boolean:
       return expAst.value;
     case Tokens.identifier:
-      return vm.getVar(expAst.name)
+      return vm.getVar(scope, expAst.name)
     case Tokens.binaryExpression:
       return binaryExpressionEvaluator(expAst);
     default:
@@ -142,8 +146,9 @@ function expressionEvaluator(expAst: any) {
   * Binary Expression Evaluator
   */
 function binaryExpressionEvaluator(binExpAst: any): any {
+  // TODO: probabilmente questo if non serve, il congtrollo sta in expressionEvaluator
   if (binExpAst.type == Tokens.identifier)
-    return vm.getVar(binExpAst.name)
+    return vm.getVar(scope, binExpAst.name)
   if (binExpAst.hasOwnProperty("operator"))
     switch (binExpAst.operator) {
       case ">":
@@ -215,7 +220,7 @@ function variableDeclaration(subAst: any,) {
   let valueToUse: any = null;
   subAst.declarations.forEach((varDec: any) => {
     valueToUse = varDec.init.type == Tokens.callExpression ? callExpression(varDec.init) : expressionEvaluator(varDec.init);
-    vm.declareVar(varDec.id.name, valueToUse);
+    vm.declareVar(scope, varDec.id.name, valueToUse);
   });
 }
 
@@ -242,6 +247,7 @@ function expressionStatement(subAst: any,) {
 function assignmentExpression(subAst: any,) {
   if (subAst.operator == "=") {
     vm.assignToVar(
+      scope,
       subAst.left.name,
       expressionEvaluator(subAst.right)
     );
@@ -262,20 +268,43 @@ function callExpression(subAst: any,) {
     return
   }
 
-  let func = vm.getFun(subAst.callee.name)
+  let func = vm.getFun(scope, subAst.callee.name)
 
   if (func.arguments.length != subAst.arguments.length)
     throw new Error(`Wrong arguments to pass to function ${subAst.callee.name}`);
 
   for (let idx = 0; idx < func.arguments.length; idx++) {
     const p = func.arguments[idx];
-    vm.declareVar(p, subAst.arguments[idx].value)
+    vm.declareVar(scope, p, subAst.arguments[idx].value)
   }
 
   return bodyEvaluation(func.body.body)
 }
 
-function returnStatement(subAst:any){
-  
+function returnStatement(subAst: any) {
+
   return (expressionEvaluator(subAst.argument))
+}
+
+
+function addScope(scopeIn: string) {
+  scope = scope + "_" + scopeIn
+}
+
+function removeScope() {
+  let scopeArr = scope.split("_")
+  scopeArr.pop()
+  scope = scopeArr.join("_")
+}
+
+function _genScopeName(tok: Tokens, position:any) {
+  let resScope = position.line.toString() + "-" + position.column.toString()
+  switch (tok) {
+    case Tokens.ifStatement:
+      resScope = "if" + resScope;
+      break;
+    default:
+      break;
+  }
+  return resScope
 }

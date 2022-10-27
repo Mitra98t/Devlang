@@ -7,31 +7,35 @@ export class VirtualMachine {
     this.funMem = {};
   }
 
-  declareFun(id:string, params:any, body:any){
-    if (this.funMem.hasOwnProperty(id)) {
+  declareFun(scope:string, id: string, params: any, body: any) {
+    if (this.funMem.hasOwnProperty(id+"_"+scope)) {
       throw new Error(
         `Function ${id} already declared`
       );
     }
-    this.funMem[id] = {}
-    this.funMem[id].arguments= []
-    params.forEach((p:any) => {
-      this.funMem[id].arguments.push(p.name)
+    let idScope = id+"_"+scope;
+    this.funMem[idScope] = {}
+    this.funMem[idScope].arguments = []
+    params.forEach((p: any) => {
+      this.funMem[idScope].arguments.push(p.name)
     });
-    this.funMem[id].body = body
+    this.funMem[idScope].body = body
   }
 
-  getFun(id:string){
-    if (!this.funMem.hasOwnProperty(id)) {
-      throw new Error(
+  getFun(scopeIn:string,id: string) {
+    let scope = scopeIn
+    while (!this.funMem.hasOwnProperty(id + "_" + scope)) {
+      scope = this._removeScope(scope)
+      if (scope == "")
+        throw new Error(
         `Missing function ${id}`
-      );
+        );
     }
     return this.funMem[id]
   }
 
   //TODO: remove this function
-  printFuns(){
+  printFuns() {
     console.log(this.funMem)
   }
 
@@ -40,36 +44,48 @@ export class VirtualMachine {
    * @param id name of var
    * @param value value of var
    */
-  declareVar(id: string, value: any) {
-    if (this.varMem.hasOwnProperty(id)) {
+  declareVar(scope: string, id: string, value: any) {
+    if (this.varMem.hasOwnProperty(id + "_" + scope)) {
       throw new Error(
         `Variable ${id} already declared`
       );
     }
-    this.varMem[id] = value;
+    this.varMem[(id + "_" + scope)] = value;
   }
   /**
   * @param id name of var
   * @param value value to put in var
   */
-  assignToVar(id: string, value: any) {
-    if (!this.varMem.hasOwnProperty(id)) {
-      throw new Error(
-        `Missing variable ${id}`
-      );
+  assignToVar(scopeIn: string, id: string, value: any) {
+    let scope = scopeIn
+    while (!this.varMem.hasOwnProperty(id + "_" + scope)) {
+      scope = this._removeScope(scope)
+      if (scope == "")
+        throw new Error(
+          `Missing variable ${id}`
+        );
     }
-    this.varMem[id] = value;
+    this.varMem[(id + "_" + scope)] = value;
   }
 
   /**
   * @param id name of var
   */
-  getVar(id: string) {
-    if (!this.varMem.hasOwnProperty(id)) {
-      throw new Error(
-        `Missing variable ${id}`
-      );
+  getVar(scopeIn: string, id: string) {
+    let scope = scopeIn
+    while (!this.varMem.hasOwnProperty(id + "_" + scope)) {
+      scope = this._removeScope(scope)
+      if (scope == "")
+        throw new Error(
+          `Missing variable ${id}`
+        );
     }
-    return this.varMem[id];
+    return this.varMem[(id +"_"+scope)];
+  }
+
+  _removeScope(scope: string) {
+    let scopeArr = scope.split("_")
+    scopeArr.pop()
+    return scopeArr.join("_")
   }
 }

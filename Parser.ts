@@ -97,7 +97,8 @@ export class Parser {
 *   : 'run' '(' Expression ')' ';'
 *   ;
 */
-  RunStatement(){
+  RunStatement() {
+    let position = this._getPosition();
     this.eat(Tokens.run)
 
     this.eat(Tokens.lpar)
@@ -105,8 +106,9 @@ export class Parser {
     this.eat(Tokens.rpar)
     this.eat(Tokens.lineDelimiter)
 
-    return{
+    return {
       type: Tokens.runStatement,
+      position,
       command,
     }
   }
@@ -116,7 +118,8 @@ export class Parser {
 *   : 'import' '(' StringLit ')' ';'
 *   ;
 */
-  ImportStatement(){
+  ImportStatement() {
+    let position = this._getPosition();
     this.eat(Tokens.import)
 
     this.eat(Tokens.lpar)
@@ -125,6 +128,7 @@ export class Parser {
     this.eat(Tokens.lineDelimiter)
     return {
       type: Tokens.importStatement,
+      position,
       library
     }
   }
@@ -134,7 +138,8 @@ export class Parser {
 *   : 'class' Identifier OPT_ClassExtends BlockStatement
 *   ;
 */
-  ClassDeclaration(){
+  ClassDeclaration() {
+    let position = this._getPosition();
     this.eat(Tokens.class)
 
     const id = this.Identifier()
@@ -144,7 +149,8 @@ export class Parser {
     const body = this.BlockStatement()
 
     return {
-      type:Tokens.classDeclaration,
+      type: Tokens.classDeclaration,
+      position,
       id,
       superClass,
       body,
@@ -156,7 +162,7 @@ export class Parser {
 *   : 'extends' Identifier
 *   ;
 */
-  ClassExtends(){
+  ClassExtends() {
     this.eat(Tokens.extends)
     return this.Identifier()
   }
@@ -166,7 +172,8 @@ export class Parser {
 *   : 'fun' Identifier '(' OPT_FormalParameterList ')' BlockStatement
 *   ;
 */
-  FunctionDeclaration(){
+  FunctionDeclaration() {
+    let position = this._getPosition();
     this.eat(Tokens.fun)
     const name = this.Identifier()
 
@@ -176,8 +183,9 @@ export class Parser {
 
     const body = this.BlockStatement()
 
-    return{
+    return {
       type: Tokens.functionDeclaration,
+      position,
       name,
       params,
       body,
@@ -190,7 +198,7 @@ export class Parser {
 *   | FormalParameterList ',' Identifier
 *   ;
 */
-  FormalParameterList(){
+  FormalParameterList() {
     const params = []
 
     do {
@@ -205,17 +213,19 @@ export class Parser {
 *   : 'return' OPT_Expression ';'
 *   ;
 */
-  ReturnStatement(){
+  ReturnStatement() {
+    let position = this._getPosition();
     this.eat(Tokens.return)
 
     const argument = this.lookahead?.type !== Tokens.lineDelimiter ? this.Expression() : null;
 
     this.eat(Tokens.lineDelimiter)
 
-    return{
+    return {
       type: Tokens.returnStatement,
+      position,
       argument,
-    } 
+    }
   }
 
   /**
@@ -242,6 +252,7 @@ export class Parser {
 *   ;
 */
   WhileStatement(): any {
+    let position = this._getPosition();
     this.eat(Tokens.while)
 
     this.eat(Tokens.lpar)
@@ -252,6 +263,7 @@ export class Parser {
 
     return {
       type: Tokens.whileStatement,
+      position,
       condition,
       body,
     }
@@ -263,6 +275,7 @@ export class Parser {
 *   ;
 */
   DoWhileStatement(): any {
+    let position = this._getPosition();
     this.eat(Tokens.do)
 
     const body = this.Statement()
@@ -277,6 +290,7 @@ export class Parser {
 
     return {
       type: Tokens.doWhileStatement,
+      position,
       body,
       condition,
     }
@@ -289,6 +303,7 @@ export class Parser {
 *   ;
 */
   ForStatement(): any {
+    let position = this._getPosition();
     this.eat(Tokens.for)
     this.eat(Tokens.lpar)
 
@@ -303,6 +318,7 @@ export class Parser {
 
     return {
       type: Tokens.forStatement,
+      position,
       init,
       condition,
       update,
@@ -330,6 +346,7 @@ export class Parser {
 *   ;
 */
   IfStatement(): any {
+    let position = this._getPosition();
     this.eat(Tokens.if)
 
     this.eat(Tokens.lpar)
@@ -344,6 +361,7 @@ export class Parser {
 
     return {
       type: Tokens.ifStatement,
+      position,
       condition,
       then,
       alternate,
@@ -356,11 +374,13 @@ export class Parser {
 *   ;
 */
   VariableStatementInit() {
+    let position = this._getPosition();
     this.eat(Tokens.let)
     const declarations = this.VariableDeclarationList()
 
     return {
       type: Tokens.variableDeclaration,
+      position,
       declarations,
     }
   }
@@ -454,6 +474,7 @@ export class Parser {
 *   ;
 */
   BlockStatement() {
+    let position = this._getPosition();
     this.eat(Tokens.lbra);
 
     const body: any =
@@ -465,6 +486,7 @@ export class Parser {
 
     return {
       type: Tokens.blockStatement,
+      position,
       body,
     };
   }
@@ -513,15 +535,15 @@ export class Parser {
 *   | CallExpression
 *   ;
 */
-  CallMemberExpression(){
+  CallMemberExpression() {
 
-    if(this.lookahead?.type === Tokens.super){
+    if (this.lookahead?.type === Tokens.super) {
       return this._CallExpression(this.Super())
     }
 
     const member = this.MemberExpression()
 
-    if(this.lookahead?.type === Tokens.lpar){
+    if (this.lookahead?.type === Tokens.lpar) {
       return this._CallExpression(member)
     }
     return member
@@ -539,14 +561,14 @@ export class Parser {
 *   | CallExpression
 *   ;
 */
-  _CallExpression(callee:any):any{
+  _CallExpression(callee: any): any {
     let callExpression = {
       type: Tokens.callExpression,
       callee,
       arguments: this.Arguments()
     }
-    
-    if(this.lookahead?.type === Tokens.lpar){
+
+    if (this.lookahead?.type === Tokens.lpar) {
       callExpression = this._CallExpression(callExpression)
     }
 
@@ -557,7 +579,7 @@ export class Parser {
 * Arguments
 *   : '(' OPT_ArgumentList ')'
 */
-  Arguments(){
+  Arguments() {
     this.eat(Tokens.lpar)
 
     const argumentList = this.lookahead?.type !== Tokens.rpar ? this.ArgumentList() : []
@@ -573,12 +595,12 @@ export class Parser {
 *   | ArgumentList ',' AssignmentExpression
 *   ;
 */
-  ArgumentList(){
+  ArgumentList() {
     const argumentList = []
 
-    do{
-    argumentList.push(this.AssignmentExpression())
-    }while(this.lookahead?.type === Tokens.comma && this.eat(Tokens.comma))
+    do {
+      argumentList.push(this.AssignmentExpression())
+    } while (this.lookahead?.type === Tokens.comma && this.eat(Tokens.comma))
 
     return argumentList
   }
@@ -590,28 +612,28 @@ export class Parser {
 *   | MemberExpression '.' '[' Expression ']'
 *   ;
 */
-  MemberExpression(){
+  MemberExpression() {
     let object = this.PrimaryExpression()
 
     while (this.lookahead?.type === Tokens.dot || this.lookahead?.type === Tokens.lsqr) {
-      if(this.lookahead.type === Tokens.dot){
+      if (this.lookahead.type === Tokens.dot) {
         this.eat(Tokens.dot)
         const property = this.Identifier()
         object = {
           type: Tokens.memberExpression,
-          computed:false,
+          computed: false,
           object,
           property,
         }
       }
 
-      if(this.lookahead.type === Tokens.lsqr){
+      if (this.lookahead.type === Tokens.lsqr) {
         this.eat(Tokens.lsqr)
         const property = this.Expression()
         this.eat(Tokens.rsqr)
         object = {
           type: Tokens.memberExpression,
-          computed:true,
+          computed: true,
           object,
           property,
         }
@@ -703,7 +725,7 @@ export class Parser {
     )
   }
 
-  ModuleExpression(){
+  ModuleExpression() {
     return this._BinaryExpression(
       "AdditiveExpression",
       Tokens.moduleOperator
@@ -829,14 +851,14 @@ export class Parser {
 *   : 'new' MemberExpression Arguments
 *   ;
 */
-  NewExpression():any{
+  NewExpression(): any {
     this.eat(Tokens.new)
 
     return {
       type: Tokens.newExpression,
       calle: this.MemberExpression(),
       arguments: this.Arguments(),
-    } 
+    }
   }
 
   /**
@@ -844,10 +866,10 @@ export class Parser {
 *   : 'this'
 *   ;
 */
-  ThisExpression(){
+  ThisExpression() {
     this.eat(Tokens.this)
-    return{
-      type:Tokens.thisExpression,
+    return {
+      type: Tokens.thisExpression,
     }
   }
 
@@ -856,10 +878,10 @@ export class Parser {
 *   : 'super'
 *   ;
 */
-  Super(){
+  Super() {
     this.eat(Tokens.super)
     return {
-      type:Tokens.super
+      type: Tokens.super
     }
   }
 
@@ -976,4 +998,8 @@ export class Parser {
     this.lookahead = this.lex.nextToken();
     return token;
   }
+  _getPosition() {
+    return { line: this.lookahead?.line, column: this.lookahead?.col }
+  }
 }
+

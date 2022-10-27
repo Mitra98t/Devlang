@@ -1,7 +1,19 @@
-let i = 5;
-i = 3;
-print(i);
+let x = 43;
 
-for(i = 0; i <= 5; i = i+1){
-  print (i);
+if(true){
+  print(x);
+  let y = 3;
+  print("y in if -> ", y);
+  if(false){
+      print("bada");
+  }
+  else{
+    print("Dentro if if");
+    print("x -> ", x, " y -> ", y);
+  }
 }
+else{
+  print("ciao");
+}
+
+print ("x globale -> " + x);
