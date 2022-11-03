@@ -132,7 +132,7 @@ function importStatement(subAst: any) {
   if(subAst.library.value != "StdIO.devl") {
     throw new Error("Missing Library")
   }
-  let libPar = new Parser(fs.readFileSync("./stdLibraries/"+subAst.library.value, "utf-8"))
+  let libPar = new Parser(fs.readFileSync(__filename + "/stdLibraries/"+subAst.library.value, "utf-8"))
   let libAst = libPar.parse()
   bodyEvaluation(libAst.body)
 }
