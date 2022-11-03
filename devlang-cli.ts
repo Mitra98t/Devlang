@@ -23,8 +23,9 @@ program
   .version('1.1.4')
   .description("Proto-Language to try and create a parser and and interpreter in TypeScript")
   .usage("[OPTIONS]")
-  .addOption(new Option('-e, --expression <exp>', 'Expression to Parse and Execute').conflicts(['file']))
-  .addOption(new Option('-f, --file <file.devl>', 'File to Parse and Execute').conflicts(['expression']))
+  .addOption(new Option('-e, --expression <exp>', 'Expression to Parse and Execute').conflicts(['file', 'simulate']))
+  .addOption(new Option('-f, --file <file.devl>', 'File to Parse and Execute').conflicts(['expression', 'sumulate']))
+  .addOption(new Option('-s, --simulate', 'Start simulate Devlang').conflicts(['expression', 'file', 'print', 'out']))
   .option('-p, --print', 'Prints to console the resulting AST of the devlang code.')
   .option('-o, --out <output file for the AST>', 'Output file to write AST to (JSON format is used, so a .json file is strongly raccomanded)')
   .option('-h, --help', 'Prints help command')
@@ -53,6 +54,10 @@ if (opts.hasOwnProperty("file")) {
   }
   parser = new Parser(fs.readFileSync(opts.file, "utf-8"))
   ast = parser.parse()
+}
+if (opts.hasOwnProperty("simulate")) {
+  console.log("simulation not implemented")
+  exit(0)
 }
 
 if (opts.hasOwnProperty("print")) {

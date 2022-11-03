@@ -1,7 +1,11 @@
-let foo = 0;
-for(foo;foo < 10; foo = foo+1){
-  if(foo % 2 == 0)
-    print(foo, " pari");
-  else
-    print(foo, " dispari");
+fun fun1(x){
+  return x + 2;
 }
+
+fun fun2(x, y){
+  let z = fun1(x) + y;
+  return z + 8;
+}
+
+
+print(fun2(10,20));

@@ -7,7 +7,7 @@ export class VirtualMachine {
     this.funMem = {};
   }
 
-  declareFun(scope:string, id: string, params: any, body: any) {
+  declareFun(scope:string, id: string, params: any, body: any, position:any) {
     if (this.funMem.hasOwnProperty(id+"_"+scope)) {
       throw new Error(
         `Function ${id} already declared`
@@ -19,6 +19,7 @@ export class VirtualMachine {
     params.forEach((p: any) => {
       this.funMem[idScope].arguments.push(p.name)
     });
+    this.funMem[idScope].position = position;
     this.funMem[idScope].body = body
   }
 
@@ -31,7 +32,7 @@ export class VirtualMachine {
         `Missing function ${id}`
         );
     }
-    return this.funMem[id]
+    return this.funMem[id+"_"+scope]
   }
 
   //TODO: remove this function

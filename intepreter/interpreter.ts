@@ -13,6 +13,7 @@ export function main(astIn: any) {
 }
 
 function bodyEvaluation(body: any) {
+  let res = null
   body.forEach((stat: any, idx: number) => {
     switch (stat.type) {
       case Tokens.variableDeclaration:
@@ -40,8 +41,8 @@ function bodyEvaluation(body: any) {
         functionDeclaration(stat);
         break;
       case Tokens.returnStatement:
-        returnStatement(stat)
-        break;
+        res = returnStatement(stat)
+        break
       case Tokens.expressionStatement:
         expressionStatement(stat);
         break;
@@ -52,11 +53,12 @@ function bodyEvaluation(body: any) {
         break;
     }
   });
+  return res
 
 }
 
 function functionDeclaration(subAst: any) {
-  vm.declareFun(scope,subAst.name.name, subAst.params, subAst.body)
+  vm.declareFun(scope, subAst.name.name, subAst.params, subAst.body, subAst.position)
 }
 
 
@@ -88,22 +90,27 @@ function forStatement(subAst: any) {
     bodyEvaluation([subAst.update])
     condition = expressionEvaluator(subAst.condition)
   }
+  removeScope()
 }
 
 function doWhileStatement(subAst: any) {
+  addScope(_genScopeName(subAst.type, subAst.position))
   let condition = expressionEvaluator(subAst.condition)
   do {
     bodyEvaluation(subAst.body.type == Tokens.blockStatement ? subAst.body.body : [subAst.body])
     condition = expressionEvaluator(subAst.condition)
   } while (condition)
+  removeScope()
 }
 
 function whileStatement(subAst: any) {
+  addScope(_genScopeName(subAst.type, subAst.position))
   let condition = expressionEvaluator(subAst.condition)
   while (condition) {
     bodyEvaluation(subAst.body.type == Tokens.blockStatement ? subAst.body.body : [subAst.body])
     condition = expressionEvaluator(subAst.condition)
   }
+  removeScope()
 }
 
 function ifStatement(subAst: any) {
@@ -133,6 +140,8 @@ function expressionEvaluator(expAst: any) {
     case Tokens.string:
     case Tokens.boolean:
       return expAst.value;
+    case Tokens.callExpression:
+      return callExpression(expAst)
     case Tokens.identifier:
       return vm.getVar(scope, expAst.name)
     case Tokens.binaryExpression:
@@ -149,6 +158,8 @@ function binaryExpressionEvaluator(binExpAst: any): any {
   // TODO: probabilmente questo if non serve, il congtrollo sta in expressionEvaluator
   if (binExpAst.type == Tokens.identifier)
     return vm.getVar(scope, binExpAst.name)
+  if(binExpAst.type == Tokens.callExpression)
+    return callExpression(binExpAst)
   if (binExpAst.hasOwnProperty("operator"))
     switch (binExpAst.operator) {
       case ">":
@@ -219,7 +230,7 @@ function binaryExpressionEvaluator(binExpAst: any): any {
 function variableDeclaration(subAst: any,) {
   let valueToUse: any = null;
   subAst.declarations.forEach((varDec: any) => {
-    valueToUse = varDec.init.type == Tokens.callExpression ? callExpression(varDec.init) : expressionEvaluator(varDec.init);
+    valueToUse = expressionEvaluator(varDec.init);
     vm.declareVar(scope, varDec.id.name, valueToUse);
   });
 }
@@ -235,7 +246,6 @@ function expressionStatement(subAst: any,) {
     case Tokens.assignmentExpression:
       assignmentExpression(subAst.expression);
       break;
-
     default:
       break;
   }
@@ -267,23 +277,31 @@ function callExpression(subAst: any,) {
     console.log(toPrint)
     return
   }
+  if (subAst.callee.name == "showmem") {
+    Object.keys(vm.varMem).forEach((varKey:string) => {
+      console.log(varKey + " -> " + vm.varMem[varKey])
+    });
+    return
+  }
 
   let func = vm.getFun(scope, subAst.callee.name)
+  addScope(_genScopeName(subAst.callee.name, func.position))
 
   if (func.arguments.length != subAst.arguments.length)
     throw new Error(`Wrong arguments to pass to function ${subAst.callee.name}`);
 
-  for (let idx = 0; idx < func.arguments.length; idx++) {
+  for (let idx = 0; idx < subAst.arguments.length; idx++) {
     const p = func.arguments[idx];
-    vm.declareVar(scope, p, subAst.arguments[idx].value)
+    vm.declareVar(scope, p, expressionEvaluator(subAst.arguments[idx]))
   }
 
-  return bodyEvaluation(func.body.body)
+  let returnVal = bodyEvaluation(func.body.body)
+  removeScope()
+  return returnVal
 }
 
 function returnStatement(subAst: any) {
-
-  return (expressionEvaluator(subAst.argument))
+  return expressionEvaluator(subAst.argument)
 }
 
 
@@ -297,13 +315,17 @@ function removeScope() {
   scope = scopeArr.join("_")
 }
 
-function _genScopeName(tok: Tokens, position:any) {
+function _genScopeName(tok: Tokens | string, position: any) {
   let resScope = position.line.toString() + "-" + position.column.toString()
   switch (tok) {
     case Tokens.ifStatement:
       resScope = "if" + resScope;
       break;
+      case Tokens.forStatement:
+      resScope = "for" + resScope;
+
     default:
+      resScope = tok + resScope;
       break;
   }
   return resScope

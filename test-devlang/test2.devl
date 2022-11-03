@@ -1,19 +1,9 @@
-let x = 43;
+let z = 44;
 
-if(true){
-  print(x);
-  let y = 3;
-  print("y in if -> ", y);
-  if(false){
-      print("bada");
-  }
-  else{
-    print("Dentro if if");
-    print("x -> ", x, " y -> ", y);
-  }
-}
-else{
-  print("ciao");
+fun functionName(x, y){
+  return x + z;
 }
 
-print ("x globale -> " + x);
+let x = functionName(2, 3);
+
+print("x -> ", x);
