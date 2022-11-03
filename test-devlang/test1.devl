@@ -1,11 +1,6 @@
-fun fun1(x){
-  return x + 2;
-}
+import("StdIO.devl");
 
-fun fun2(x, y){
-  let z = fun1(x) + y;
-  return z + 8;
-}
+let x = 3;
 
+print("ciao come stai? " + x);
 
-print(fun2(10,20));

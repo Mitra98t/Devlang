@@ -1,7 +1,9 @@
 import { exec } from "child_process";
 import { defaults } from "figlet";
+import { Parser } from "../Parser";
 import { Tokens } from "../typesDef";
 import { VirtualMachine } from "./vm";
+import fs from "fs"
 
 const vm = new VirtualMachine();
 let scope = "global"
@@ -54,7 +56,6 @@ function bodyEvaluation(body: any) {
     }
   });
   return res
-
 }
 
 function functionDeclaration(subAst: any) {
@@ -126,8 +127,14 @@ function ifStatement(subAst: any) {
   removeScope()
 }
 
+// TODO: trovare un modo intelligente di gestire gli scoping delle funzioni e variabili delle librerie, per ora vengono instanziate in global
 function importStatement(subAst: any) {
-
+  if(subAst.library.value != "StdIO.devl") {
+    throw new Error("Missing Library")
+  }
+  let libPar = new Parser(fs.readFileSync("./stdLibraries/"+subAst.library.value, "utf-8"))
+  let libAst = libPar.parse()
+  bodyEvaluation(libAst.body)
 }
 
 /**
@@ -268,15 +275,7 @@ function assignmentExpression(subAst: any,) {
   * Function call 
   */
 function callExpression(subAst: any,) {
-  //TODO: remove -> reimplementare in libreria stdio
-  if (subAst.callee.name == "print") {
-    let toPrint = "";
-    subAst.arguments.forEach((arg: any) => {
-      toPrint += expressionEvaluator(arg)
-    });
-    console.log(toPrint)
-    return
-  }
+  // TODO: rimuovere, solo per debug
   if (subAst.callee.name == "showmem") {
     Object.keys(vm.varMem).forEach((varKey:string) => {
       console.log(varKey + " -> " + vm.varMem[varKey])
