@@ -1,7 +1,7 @@
 {
   "name": "devlang-cli",
   "description": "A simple parser for a simple language",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "main": "./out/devlang-cli.js",
   "bin": "./out/devlang-cli.js",
   "scripts": {
